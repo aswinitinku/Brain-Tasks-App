@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: brain-tasks-app-lb
+  labels:
+    app: brain-tasks-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: brain-tasks-app
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http

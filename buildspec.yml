@@ -1,0 +1,34 @@
+version: 0.2
+
+env:
+  variables:
+    REPOSITORY_URI: "157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app"
+    IMAGE_TAG: "latest"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing dependencies...
+      - npm ci
+  pre_build:
+    commands:
+      - echo Logging into Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region "us-east-1" | docker login --username AWS --password-stdin "157945397916.dkr.ecr.us-east-1.amazonaws.com"
+  build:
+    commands:
+      - echo Building app...
+      - npm run build
+      - echo Building Docker image...
+      - docker build -t 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest .
+      - docker tag 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest
+  post_build:
+    commands:
+      - echo Pushing Docker image...
+      - docker push 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest
+      - printf '[{"name":"brain-tasks-app","imageUri":"%s"}]' 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json

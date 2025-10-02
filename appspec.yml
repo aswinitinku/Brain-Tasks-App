@@ -1,0 +1,15 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: Kubernetes
+      Properties:
+        ApiVersion: apps/v1
+        Kind: Deployment
+        Name: brain-tasks-app
+        Namespace: default
+Hooks:
+  - BeforeInstall:
+      - location: scripts/update_k8s_image.sh
+        timeout: 180
+        runas: root
+
