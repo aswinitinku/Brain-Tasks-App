@@ -9,6 +9,9 @@ NAMESPACE=${NAMESPACE:-default}
 
 echo "Update kubeconfig..."
 aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER
+kubectl config use-context arn:aws:eks:us-east-1:157945397916:cluster/$EKS_CLUSTER
+kubectl get nodes
+
 
 echo "Set image to $IMAGE_URI"
 kubectl -n $NAMESPACE set image deployment/$DEPLOYMENT_NAME $DEPLOYMENT_NAME=$IMAGE_URI --record
