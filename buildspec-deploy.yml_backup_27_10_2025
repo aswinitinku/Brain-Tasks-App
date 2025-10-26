@@ -10,23 +10,24 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies (kubectl, awscli, eksctl)..."
+      - echo "Installing dependencies (kubectl, awscli)..."
       - rm -f /usr/local/bin/kubectl
       - curl -LO https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
       - chmod +x kubectl
-      - mv kubectl /usr/local/bin/
-      - kubectl version --client
+      - sudo mv kubectl /usr/local/bin/
+      - chmod +x /usr/local/bin/kubectl
+      - /usr/local/bin/kubectl version --client
       - pip install awscli
   pre_build:
     commands:
-      - echo "Configuring kubectl access"
+      - echo "Configuring kubectl for cluster access"
       - aws eks update-kubeconfig --region $REGION --name $CLUSTER_NAME
   build:
     commands:
-      - echo "Deploying manifests to EKS..."
-      - kubectl apply -f deployment.yaml
-      - kubectl apply -f service.yaml
+      - echo "Running deployment script..."
+      - chmod +x scripts/deploy_to_eks.sh
+      - ./scripts/deploy_to_eks.sh
   post_build:
     commands:
-      - echo "Deployment successful ✅"
+      - echo "✅ Deployment completed successfully"
 
