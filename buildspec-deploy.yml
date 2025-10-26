@@ -11,8 +11,9 @@ phases:
       python: 3.11
     commands:
       - echo "Installing dependencies (kubectl, awscli)..."
-      - curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.0/2024-09-26/bin/linux/amd64/kubectl
-      - chmod +x kubectl && mv kubectl /usr/local/bin/
+      - curl -o kubectl https://s3.us-west-1.amazonaws.com/amazon-eks/1.30.0/2024-09-26/bin/linux/amd64/kubectl
+      - chmod +x kubectl
+      - sudo mv kubectl /usr/local/bin/
       - pip install awscli
   pre_build:
     commands:
