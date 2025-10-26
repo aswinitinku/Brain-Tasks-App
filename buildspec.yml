@@ -10,8 +10,8 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing dependencies...
-      - npm ci
+      - echo Installing serve globally...
+      - npm install -g serve
   pre_build:
     commands:
       - echo Logging into Amazon ECR...
@@ -19,8 +19,6 @@ phases:
       - aws ecr get-login-password --region "us-east-1" | docker login --username AWS --password-stdin "157945397916.dkr.ecr.us-east-1.amazonaws.com"
   build:
     commands:
-      - echo Building app...
-      - npm run build
       - echo Building Docker image...
       - docker build -t 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest .
       - docker tag 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest 157945397916.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app:latest
