@@ -24,6 +24,8 @@ phases:
   build:
     commands:
       - echo "Deploying manifests to EKS..."
+      - kubectl get nodes
+      - kubectl get pods -A
       - kubectl apply -f deployment.yaml --validate=false
       - kubectl apply -f service.yaml --validate=false
   post_build:
